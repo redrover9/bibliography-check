@@ -3,11 +3,13 @@ import unittest
 import textract
 import os
 import shutil
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException as WDE
 
-essay = textract.process("/home/grace/Downloads/essay.pdf")
+essayPath = input("Enter the file path of the essay: ")
+essay = textract.process(essayPath)
 essayDecoded = essay.decode()
 essayDecoded = essayDecoded.replace('\u200b', '').replace('\n', '')
 re.sub('“', '', essayDecoded)
@@ -42,19 +44,29 @@ class PythonOrgSearch(unittest.TestCase):
         driver = self.driver
         for citation in citations:
             try: 
-                driver.get(citation)
-                if 'pdf' in citation:
-                    pdfText = textract.process('0029682-003-XIE.pdfpage27.pdf')
-                    pdfTextDecoded = pdfText.decode()
-                    if quote in pdfTextDecoded:
-                        print("The quote was found in a PDF file downloaded from", citation)
+                if '.pdf' in citation:
+                    try:
+                        pdf = requests.get(citation, allow_redirects=True)
+                        open('pdf1.pdf', 'wb').write(pdf.content)
+                        pdfText = textract.process('pdf1.pdf')
+                        pdfTextDecoded = pdfText.decode()
+                        assert quote in pdfTextDecoded
+                        if quote in pdfTextDecoded:
+                            print("The quote was found in a PDF file downloaded from", citation)
+                    except AssertionError:
+                        pass
+                        # print("The quote was not found in the PDF.")
+                    except:
+                        print("The PDF could not be loaded.")
                 else:
+                    driver.get(citation)
                     assert quote in driver.page_source
                 print("The quote was found on the web page", citation)
             except WDE:
                 print("The web page at", citation, "did not load correctly. It may require logging in.")
             except AssertionError:
-                print("The citation was not found on page", citation)
+                pass
+                # print("The citation was not found on page", citation)
     def tearDown(self):
         self.driver.close()
 if __name__ == "__main__":
