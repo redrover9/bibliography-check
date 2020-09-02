@@ -13,8 +13,9 @@ essay = textract.process(essayPath)
 essayDecoded = essay.decode()
 essayDecoded = essayDecoded.replace('\u200b', '').replace('\n', '')
 re.sub('“', '', essayDecoded)
-httpOccurrences = [m.start() for m in re.finditer('http', essayDecoded)]
-httpOccurrencesLen = len(httpOccurrences)
+# httpOccurrences = [m.start() for m in re.finditer('http', essayDecoded)]
+# httpOccurrencesLen = len(httpOccurrences)
+
 
 linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded) 
 links = [x[:-1] for x in linksUnformatted]
