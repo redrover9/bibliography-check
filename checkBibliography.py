@@ -16,7 +16,7 @@ re.sub('“', '', essayDecoded)
 httpOccurrences = [m.start() for m in re.finditer('http', essayDecoded)]
 httpOccurrencesLen = len(httpOccurrences)
 
-linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded) #If the student has a period at the end of their links, remove the question mark.
+linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded)
 links = [x[:-1] for x in linksUnformatted]
 linksLen = len(links)
 
