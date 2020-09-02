@@ -16,7 +16,7 @@ re.sub('“', '', essayDecoded)
 httpOccurrences = [m.start() for m in re.finditer('http', essayDecoded)]
 httpOccurrencesLen = len(httpOccurrences)
 
-linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded)
+linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded) #If the student has a period at the end of their links, remove the question mark.
 links = [x[:-1] for x in linksUnformatted]
 linksLen = len(links)
 
@@ -52,10 +52,13 @@ class PythonOrgSearch(unittest.TestCase):
                         pdfTextDecoded = pdfText.decode()
                         assert quote in pdfTextDecoded
                         if quote in pdfTextDecoded:
+                            print("\n")
+                            print("\n")
                             print("The quote was found in a PDF file downloaded from", citation)
+                            print("\n")
+                            print("\n")
                     except AssertionError:
                         pass
-                        # print("The quote was not found in the PDF.")
                     except:
                         print("The PDF could not be loaded.")
                 else:
