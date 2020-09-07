@@ -13,9 +13,6 @@ essay = textract.process(essayPath)
 essayDecoded = essay.decode()
 essayDecoded = essayDecoded.replace('\u200b', '').replace('\n', '')
 re.sub('“', '', essayDecoded)
-# httpOccurrences = [m.start() for m in re.finditer('http', essayDecoded)]
-# httpOccurrencesLen = len(httpOccurrences)
-
 
 linksUnformatted = re.findall(r'(https?://[^\s]+[\.]?)', essayDecoded) 
 links = [x[:-1] for x in linksUnformatted]
@@ -30,7 +27,7 @@ while i < linksLen:
 citations = list(citations)
 quote = input("Enter a quote to search the student's citations for: ")
 
-class PythonOrgSearch(unittest.TestCase):
+class EssaySearch(unittest.TestCase):
     def setUp(self):
         profile = webdriver.FirefoxProfile()
         profile.set_preference("browser.download.folderList",2)
@@ -41,7 +38,7 @@ class PythonOrgSearch(unittest.TestCase):
         profile.set_preference("pdfjs.disabled", True)
         profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")  
         self.driver = webdriver.Firefox(firefox_profile=profile)
-    def test_search_in_python_org(self):
+    def test_search_in_essay(self):
         driver = self.driver
         for citation in citations:
             try: 
